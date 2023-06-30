@@ -621,7 +621,10 @@ kernel void kernel_rope(
     const int64_t i1 = tpig[0];
 
     const bool is_neox = mode & 2;
-    const float theta_scale = pow(10000.0, -2.0f/n_dims);
+    const float base = 10000.0f;
+    const float a = 4.0f;
+    const float scaled_base = base * pow(a, n_dims/(n_dims-2.0f));
+    const float theta_scale = pow(scaled_base, -2.0f/n_dims);
 
     const int64_t p = ((mode & 1) == 0 ? n_past + i2 : i2);
 

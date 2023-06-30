@@ -2197,7 +2197,11 @@ inline void ggml_cuda_op_rope(
     const int mode   = ((int32_t *) src1->data)[2];
     GGML_ASSERT(mode == 0);
 
-    const float theta_scale = powf(10000.0, -2.0f/n_dims);
+    const float base = 10000.0;
+    const float a = 4.0;
+    const float scaled_base = base * powf(a, n_dims/(n_dims-2.0f));
+
+    const float theta_scale = powf(scaled_base, -2.0f/n_dims);
     const float p = ((mode & 1) == 0 ? n_past + i02 : i02);
 
     // compute
